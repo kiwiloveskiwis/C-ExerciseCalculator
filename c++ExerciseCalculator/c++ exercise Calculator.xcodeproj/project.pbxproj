@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5784AA1E1CEFFE0B00A091E8 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5784AA1D1CEFFE0B00A091E8 /* main.cpp */; };
 		5784AA271CEFFF4800A091E8 /* Calculator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5784AA241CEFFF4800A091E8 /* Calculator.cpp */; };
+		5784AA291CF0858C00A091E8 /* Operator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5784AA281CF0858C00A091E8 /* Operator.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -29,6 +30,7 @@
 		5784AA241CEFFF4800A091E8 /* Calculator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Calculator.cpp; sourceTree = "<group>"; };
 		5784AA251CEFFF4800A091E8 /* Calculator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Calculator.hpp; sourceTree = "<group>"; };
 		5784AA261CEFFF4800A091E8 /* Operator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Operator.hpp; sourceTree = "<group>"; };
+		5784AA281CF0858C00A091E8 /* Operator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Operator.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +67,7 @@
 				5784AA241CEFFF4800A091E8 /* Calculator.cpp */,
 				5784AA251CEFFF4800A091E8 /* Calculator.hpp */,
 				5784AA261CEFFF4800A091E8 /* Operator.hpp */,
+				5784AA281CF0858C00A091E8 /* Operator.cpp */,
 			);
 			path = "c++ exercise Calculator";
 			sourceTree = "<group>";
@@ -125,6 +128,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5784AA291CF0858C00A091E8 /* Operator.cpp in Sources */,
 				5784AA1E1CEFFE0B00A091E8 /* main.cpp in Sources */,
 				5784AA271CEFFF4800A091E8 /* Calculator.cpp in Sources */,
 			);
@@ -245,6 +249,7 @@
 				5784AA231CEFFE0B00A091E8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

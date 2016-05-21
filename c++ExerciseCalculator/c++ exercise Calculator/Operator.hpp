@@ -1,11 +1,3 @@
-//
-//  Operator.hpp
-//  算法练习2
-//
-//  Created by 卢以宁 on 5/21/16.
-//  Copyright © 2016 卢以宁. All rights reserved.
-//
-
 #ifndef Operator_hpp
 #define Operator_hpp
 
@@ -17,6 +9,7 @@
 #include <stack>
 #include <string>
 using namespace std;
+#define TNum long double
 
 template <typename T>
 inline T popTop(stack<T> &stack) {
@@ -61,28 +54,6 @@ public:
         numStack.push(worker(lhs, rhs)); //left&right hand size
     }
     static map<const string, const Operator2* const> operators;
-};
-
-const Operator *const Operator::bracket = new Operator("(");
-map<const string, const Operator1*const> Operator1::operators {
-#define OPERATOR1(name, result) { name, new Operator1(name, [](TNum num) { return result; }) }
-    OPERATOR1("+", num),  // hey this unary operator does exactly nothing!
-    OPERATOR1("-", -num),
-    OPERATOR1("sin", sin(num)),
-    OPERATOR1("cos", cos(num))
-#undef OPERATOR1
-};
-
-map<const string, const Operator2*const> Operator2::operators {
-#define OPERATOR2(name, precedence, result) \
-{ name, new Operator2(name, precedence, [](TNum lhs, TNum rhs) { return result; }) }
-    OPERATOR2("^", 1, pow(lhs, rhs)),
-    OPERATOR2("*", 2, lhs * rhs),
-    OPERATOR2("/", 2, lhs / rhs),
-    OPERATOR2("+", 3, lhs + rhs),
-    OPERATOR2("-", 3, lhs - rhs),
-//  equal to {"-", new Operator2("-", 3, [](TNum lhs, TNum rhs){ return lhs - rhs; })}
-#undef OPERATOR2
 };
 
 
