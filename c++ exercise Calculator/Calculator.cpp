@@ -45,7 +45,7 @@ ErrorType Calculator::readInAlpha(bool &unaryFlag) {
     iss.putback(c);
     for (int i = 0;i < word.length(); i++)word[i] = tolower(word[i]);
     if (word == "ans") {
-        numbers.push(preresult);
+        numbers.push(previousResult);
         unaryFlag = false;
     }
     else if (constNum.count(word) != 0) {

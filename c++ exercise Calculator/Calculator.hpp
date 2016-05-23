@@ -21,7 +21,7 @@ private:
     string expr;
     istringstream iss;
 public:
-    TNum preresult;
+    TNum previousResult;
     Calculator(string s) : expr(s), iss(expr) { }
     enum ErrorType {OK, DivisionByZero, UnknownOperator, UnexpectedNumber };
     bool handleError(ErrorType type) ;
