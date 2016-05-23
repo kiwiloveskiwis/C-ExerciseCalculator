@@ -104,5 +104,3 @@ bool Calculator::calculate(TNum &result)  {
     return true;
 #undef ERROR_HANDLER
 }
-
-
