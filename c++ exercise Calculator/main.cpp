@@ -1,5 +1,7 @@
+#include <cmath>
 #include <iostream>
 #include <string>
+
 #include "Calculator.hpp"
 
 using namespace std;
@@ -13,7 +15,7 @@ int main() {
         calculator.previousResult = previousResult;
         if (calculator.calculate(result)) {
             cout << "Result: " ;
-            if (result - (long int)result < 1e-8) cout<< (long int)result<<endl;
+            if (abs(result - round(result)) < 1e-8) cout << round(result) << endl;
             else cout << result << endl;
         }
         previousResult = result;

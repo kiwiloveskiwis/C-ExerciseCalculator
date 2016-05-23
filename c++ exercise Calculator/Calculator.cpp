@@ -1,8 +1,15 @@
 #include "Calculator.hpp"
 
-map<const string, TNum > constNum {{"pi", M_PI}, {"e", M_E}};
+#include <iostream>
+#include <cctype>
+#include <map>
+#include <cassert>
+#include <cmath>
+
+map<const string, TNum> constNum {{"pi", M_PI}, {"e", M_E}};
 
 using ErrorType = Calculator::ErrorType;
+
 bool Calculator:: handleError(ErrorType type) {
     if (!type) return false;
     int pos = static_cast<int>(iss.tellg());
@@ -43,12 +50,11 @@ ErrorType Calculator::readInAlpha(bool &unaryFlag) {
     char c;
     while (iss >> std::noskipws >> c && isalpha(c)) word += c;
     iss.putback(c);
-    for (int i = 0;i < word.length(); i++)word[i] = tolower(word[i]);
+    for (int i = 0; i < word.length(); i++) word[i] = tolower(word[i]);
     if (word == "ans") {
         numbers.push(previousResult);
         unaryFlag = false;
-    }
-    else if (constNum.count(word) != 0) {
+    } else if (constNum.count(word) != 0) {
         numbers.push(constNum[word]);
         unaryFlag = false;
     }
@@ -57,8 +63,7 @@ ErrorType Calculator::readInAlpha(bool &unaryFlag) {
         readInNumber();
         opStack.push(Operator2::operators[word]);
     } else return ErrorType::UnknownOperator;
-    
-    return OK;
+    return ErrorType::OK;
 }
 
 bool Calculator::calculate(TNum &result)  {
@@ -76,30 +81,33 @@ bool Calculator::calculate(TNum &result)  {
             iss.putback(c);
             ERROR_HANDLER(readInAlpha(unaryFlag));
         } else if (c == '(') {
-                opStack.push(Operator1::bracket); // precedence : max()
-                unaryFlag = true;
+            opStack.push(Operator::bracket);    // precedence : max()
+            unaryFlag = true;
         } else if (c == ')') {
             while (opStack.top()->name != "(") ERROR_HANDLER(popOperator());
             opStack.pop(); // pop the '('
             unaryFlag = false;
         } else {
-            string cc(1,c);
-            if (Operator1::operators.count(cc) == 0 && Operator2::operators.count(cc) == 0)
+            string op(1, c);
+            if (!Operator1::operators.count(op) && !Operator2::operators.count(op))
                 ERROR_HANDLER(UnknownOperator);
-            if(unaryFlag) {
-                while (!opStack.empty() && opStack.top()->precedence < Operator1::operators[cc]->precedence)
+            if (unaryFlag) {
+                while (!opStack.empty() && opStack.top()->precedence < Operator1::operators[op]->precedence)
                     ERROR_HANDLER(popOperator());
-                opStack.push(Operator1::operators[cc]);
+                opStack.push(Operator1::operators[op]);
             } else {
-                while (!opStack.empty() && opStack.top()->precedence < Operator2::operators[cc]->precedence)
+                while (!opStack.empty() && opStack.top()->precedence < Operator2::operators[op]->precedence)
                     ERROR_HANDLER(popOperator());
-                opStack.push(Operator2::operators[cc]);
+                opStack.push(Operator2::operators[op]);
             }
             unaryFlag = true;
         }
     }
     while (!opStack.empty()) ERROR_HANDLER(popOperator());
-    if (numbers.size() != 1) {handleError(UnexpectedNumber); return false;}
+    if (numbers.size() != 1) {
+        handleError(UnexpectedNumber);
+        return false;
+    }
     result = popTop(numbers);
     return true;
 #undef ERROR_HANDLER

@@ -19,13 +19,13 @@ map<const string, const Operator1*const> Operator1::operators {
 
 map<const string, const Operator2*const> Operator2::operators {
 #define OPERATOR2(name, precedence, result) \
-{ name, new Operator2(name, precedence, [](TNum lhs, TNum rhs) { return result; }) }
-    OPERATOR2("log", 1, log(rhs)/log(lhs)),
+         { name, new Operator2(name, precedence, [](TNum lhs, TNum rhs) { return result; }) }
+    OPERATOR2("log", 1, log(rhs) / log(lhs)),
     OPERATOR2("^", 1, pow(lhs, rhs)),
     OPERATOR2("*", 2, lhs * rhs),
     OPERATOR2("/", 2, lhs / rhs),
     OPERATOR2("+", 3, lhs + rhs),
     OPERATOR2("-", 3, lhs - rhs),
-    //  equal to {"-", new Operator2("-", 3, [](TNum lhs, TNum rhs){ return lhs - rhs; })}
+    // equals to { "-", new Operator2("-", 3, [](TNum lhs, TNum rhs) { return lhs - rhs; }) }
 #undef OPERATOR2
 };
