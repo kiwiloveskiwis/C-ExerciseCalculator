@@ -2,27 +2,19 @@
 #define Calculator_hpp
 
 #include <sstream>
-#include <stack>
 #include <string>
 
 #include "Operator.hpp"
 
 class Calculator {
 public:
-    enum class ErrorType { OK, UnknownOperator, UnexpectedNumber };
+    enum class ErrorType { OK, UnknownOperator, UnexpectedNumber } error = ErrorType::OK;
+    int errorPos = -1;
+    TNum result;
+    constexpr Calculator(TNum previousResult = 0) : result(previousResult) { }
+    bool calculate(const std::string expr);
 private:
-    std::stack<const Operator*> opStack;
-    std::stack<TNum> numbers;
-    std::string expr;
-    std::istringstream iss;
-    bool handleError(ErrorType type);
-    ErrorType popOperator();
-    void readInNumber();
-    ErrorType readInAlpha(bool &unaryFlag);
-public:
-    TNum previousResult;
-    Calculator(std::string s) : expr(s), iss(expr) { }
-    bool calculate(TNum &result);
+    bool handleError(ErrorType type, std::istringstream &iss, const std::string &expr);
 };
 
 #endif /* Calculator_hpp */
