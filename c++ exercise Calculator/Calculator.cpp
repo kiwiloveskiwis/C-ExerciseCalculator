@@ -2,11 +2,10 @@
 
 #include <algorithm>
 #include <cassert>
-#include <stack>
 
 using namespace std;
 
-map<const string, TNum> constNum {{"pi", M_PI}, {"e", M_E}};
+map<string, TNum> constNum {{"pi", M_PI}, {"e", M_E}};
 
 bool Calculator::handleError(ErrorType type, istringstream &iss, const string &expr) {
     if (type == ErrorType::OK) return false;
@@ -24,7 +23,7 @@ inline Calculator::ErrorType popOperator(stack<const Operator*> &opStack, stack<
     return Calculator::ErrorType::OK;
 }
 
-bool Calculator::calculate(const string expr)  {
+bool Calculator::calculate(string expr)  {
     istringstream iss(expr);
     stack<const Operator*> opStack;
     stack<TNum> numbers;

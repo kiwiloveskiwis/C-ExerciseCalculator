@@ -12,7 +12,7 @@ public:
     int errorPos = -1;
     TNum result;
     constexpr Calculator(TNum previousResult = 0) : result(previousResult) { }
-    bool calculate(const std::string expr);
+    bool calculate(std::string expr);
 private:
     bool handleError(ErrorType type, std::istringstream &iss, const std::string &expr);
 };
