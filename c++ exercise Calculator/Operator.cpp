@@ -1,8 +1,25 @@
 #include "Operator.hpp"
-#define TNum long double
+
+#include <cmath>
+
+using namespace std;
+
+Operator::Operator(std::string name, int precedence) : name(name), precedence(precedence) { }
+Operator1::Operator1(string name, TNum (*worker)(TNum)) : Operator(name, 0), worker(worker) { }
+Operator2::Operator2(string name, int precedence, TNum (*worker)(TNum, TNum))
+    : Operator(name, precedence), worker(worker) { }
+
+void Operator::operate(stack<TNum> &numStack) const { }
+void Operator1::operate(stack<TNum> &numStack) const {
+  numStack.push(worker(popTop(numStack)));
+}
+void Operator2::operate(stack<TNum> &numStack) const {
+  TNum rhs = popTop(numStack), lhs = popTop(numStack);
+  numStack.push(worker(lhs, rhs));  // left & right hand side
+}
 
 const Operator *const Operator::bracket = new Operator("(");
-map<const string, const Operator1*const> Operator1::operators {
+map<string, const Operator1*> Operator1::operators {
 #define OPERATOR1(name, result) { name, new Operator1(name, [](TNum num) { return result; }) }
     OPERATOR1("+", num),  // hey this unary operator does exactly nothing!
     OPERATOR1("-", -num),
@@ -16,8 +33,7 @@ map<const string, const Operator1*const> Operator1::operators {
     OPERATOR1("arcsin", asin(num)),
 #undef OPERATOR1
 };
-
-map<const string, const Operator2*const> Operator2::operators {
+map<string, const Operator2*> Operator2::operators {
 #define OPERATOR2(name, precedence, result) \
          { name, new Operator2(name, precedence, [](TNum lhs, TNum rhs) { return result; }) }
     OPERATOR2("log", 1, log(rhs) / log(lhs)),
