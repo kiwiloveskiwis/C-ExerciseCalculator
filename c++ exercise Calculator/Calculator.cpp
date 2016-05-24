@@ -1,19 +1,17 @@
 #include "Calculator.hpp"
 
-#include <iostream>
-#include <cctype>
-#include <map>
+#include <algorithm>
 #include <cassert>
-#include <cmath>
+#include <iostream>
+
+using namespace std;
 
 map<const string, TNum> constNum {{"pi", M_PI}, {"e", M_E}};
 
-using ErrorType = Calculator::ErrorType;
-
-bool Calculator:: handleError(ErrorType type) {
-    if (!type) return false;
+bool Calculator::handleError(ErrorType type) {
+    if (type == ErrorType::OK) return false;
     int pos = static_cast<int>(iss.tellg());
-    if (pos < 0) pos = expr.length(); // reach the end of the expression
+    if (pos < 0) pos = static_cast<int>(expr.length()); // reach the end of the expression
     cerr << "Position " << pos << ": ";
     switch (type) {
         case ErrorType::UnexpectedNumber:
@@ -30,7 +28,7 @@ bool Calculator:: handleError(ErrorType type) {
     return true;
 }
 
-ErrorType Calculator::popOperator() {
+Calculator::ErrorType Calculator::popOperator() {
     assert(numbers.size() >= 1);
     assert(!opStack.empty());
     const Operator *op = popTop(opStack);
@@ -44,22 +42,22 @@ void Calculator::readInNumber() {
     numbers.push(a);
 }
 
-ErrorType Calculator::readInAlpha(bool &unaryFlag) {
+Calculator::ErrorType Calculator::readInAlpha(bool &unaryFlag) {
     unaryFlag = true;
     string word;
     char c;
     while (iss >> std::noskipws >> c && isalpha(c)) word += c;
     iss.putback(c);
-    for (int i = 0; i < word.length(); i++) word[i] = tolower(word[i]);
+    transform(word.begin(), word.end(), word.begin(), ::tolower);
     if (word == "ans") {
         numbers.push(previousResult);
         unaryFlag = false;
-    } else if (constNum.count(word) != 0) {
+    } else if (constNum.count(word)) {
         numbers.push(constNum[word]);
         unaryFlag = false;
     }
-    else if (Operator1::operators.count(word) != 0) opStack.push(Operator1::operators[word]);
-    else if (Operator2::operators.count(word) != 0) {
+    else if (Operator1::operators.count(word)) opStack.push(Operator1::operators[word]);
+    else if (Operator2::operators.count(word)) {
         readInNumber();
         opStack.push(Operator2::operators[word]);
     } else return ErrorType::UnknownOperator;
@@ -68,7 +66,6 @@ ErrorType Calculator::readInAlpha(bool &unaryFlag) {
 
 bool Calculator::calculate(TNum &result)  {
 #define ERROR_HANDLER(call) if (handleError(call)) return false
-    string tempNumber;
     bool unaryFlag = true;
     char c;
     while (iss >> c) {
@@ -90,7 +87,7 @@ bool Calculator::calculate(TNum &result)  {
         } else {
             string op(1, c);
             if (!Operator1::operators.count(op) && !Operator2::operators.count(op))
-                ERROR_HANDLER(UnknownOperator);
+                ERROR_HANDLER(ErrorType::UnknownOperator);
             if (unaryFlag) {
                 while (!opStack.empty() && opStack.top()->precedence < Operator1::operators[op]->precedence)
                     ERROR_HANDLER(popOperator());
@@ -105,7 +102,7 @@ bool Calculator::calculate(TNum &result)  {
     }
     while (!opStack.empty()) ERROR_HANDLER(popOperator());
     if (numbers.size() != 1) {
-        handleError(UnexpectedNumber);
+        handleError(ErrorType::UnexpectedNumber);
         return false;
     }
     result = popTop(numbers);

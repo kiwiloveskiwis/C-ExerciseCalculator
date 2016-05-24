@@ -1,6 +1,5 @@
 #include <cmath>
 #include <iostream>
-#include <string>
 
 #include "Calculator.hpp"
 
@@ -8,7 +7,7 @@ using namespace std;
 
 int main() {
     string s;
-    long double previousResult = 0;
+    TNum previousResult = 0;
     while (getline(cin, s)) {
         long double result;
         Calculator calculator(s);

@@ -1,61 +1,41 @@
 #ifndef Operator_hpp
 #define Operator_hpp
 
-#include <cassert>
-#include <cmath>
 #include <limits>
 #include <map>
-#include <stack>
 #include <string>
 
-using namespace std;
-
-#define TNum long double
-
-template <typename T>
-inline T popTop(stack<T> &stack) {
-    T result = stack.top();
-    stack.pop();
-    return result;
-}
+#include "utils.hpp"
 
 class Operator {
-private:
 protected:
-    Operator(const string name, int precedence = numeric_limits<int>::max()) : name(name), precedence(precedence) { }
+    Operator(const std::string name, int precedence = std::numeric_limits<int>::max());
 public:
-    const string name;
+    const std::string name;
     const int precedence;
-    virtual void operate(stack<TNum> &numStack) const { }
+    virtual void operate(std::stack<TNum> &numStack) const;
     
     static const Operator *const bracket;
 };
 
 class Operator1 : public Operator {
 private:
-    TNum(*const worker) (TNum);
+    TNum (*const worker)(TNum);
 protected:
-    Operator1(const string name, TNum (*const worker)(TNum)) : Operator(name, 0), worker(worker) { }
+    Operator1(const std::string name, TNum (*const worker)(TNum));
 public:
-    virtual void operate(stack<TNum> &numStack) const {
-        numStack.push(worker(popTop(numStack)));
-    }
-    static map<const string, const Operator1* const> operators;
+    virtual void operate(std::stack<TNum> &numStack) const;
+    static std::map<const std::string, const Operator1* const> operators;
 };
-
 
 class Operator2 : public Operator {
 private:
-    TNum(*const worker) (TNum, TNum);
+    TNum (*const worker)(TNum, TNum);
 protected:
-    Operator2(const string name, const int precedence, TNum (*const worker)(TNum, TNum)) : Operator(name, precedence), worker(worker) { }
+    Operator2(const std::string name, int precedence, TNum (*const worker)(TNum, TNum));
 public:
-    virtual void operate(stack<TNum> &numStack) const {
-        TNum rhs = popTop(numStack), lhs = popTop(numStack);
-        numStack.push(worker(lhs, rhs)); // left & right hand side
-    }
-    static map<const string, const Operator2* const> operators;
+    virtual void operate(std::stack<TNum> &numStack) const;
+    static std::map<const std::string, const Operator2* const> operators;
 };
-
 
 #endif /* Operator_hpp */

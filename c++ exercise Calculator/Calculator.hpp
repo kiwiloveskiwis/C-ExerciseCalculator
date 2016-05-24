@@ -1,30 +1,27 @@
 #ifndef Calculator_hpp
 #define Calculator_hpp
 
-#include <stack>
 #include <sstream>
+#include <stack>
 #include <string>
 
 #include "Operator.hpp"
 
-using namespace std;
-
 class Calculator {
 public:
-    enum ErrorType { OK, DivisionByZero, UnknownOperator, UnexpectedNumber };
+    enum class ErrorType { OK, UnknownOperator, UnexpectedNumber };
 private:
-    stack<const Operator*> opStack;
-    stack<TNum> numbers;
-    string expr;
-    istringstream iss;
+    std::stack<const Operator*> opStack;
+    std::stack<TNum> numbers;
+    std::string expr;
+    std::istringstream iss;
     bool handleError(ErrorType type);
     ErrorType popOperator();
-    int getWeight(char op);
     void readInNumber();
     ErrorType readInAlpha(bool &unaryFlag);
 public:
     TNum previousResult;
-    Calculator(string s) : expr(s), iss(expr) { }
+    Calculator(std::string s) : expr(s), iss(expr) { }
     bool calculate(TNum &result);
 };
 
