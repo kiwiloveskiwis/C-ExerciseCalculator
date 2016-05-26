@@ -6,7 +6,7 @@
 
 using namespace std;
 
-map<string, TNum> constNum {{"pi", M_PI}, {"e", M_E}};
+map<string, TNum> constNum {{"pi", M_PI}, {"e", M_E}, {"dwt", 250}};
 
 bool Calculator::handleError(ErrorType type, istringstream &iss, const string &expr) {
     if (type == ErrorType::OK) return false;
