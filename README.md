@@ -2,7 +2,7 @@
 
 A Problem Solving assignment by kiwi to calculate a given mathematical expression.
 
-## Dependences
+## Dependencies
 
 - `make`
 - `clang`
